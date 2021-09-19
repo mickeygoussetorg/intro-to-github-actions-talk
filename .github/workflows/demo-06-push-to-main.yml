@@ -1,0 +1,170 @@
+name: Demo 06 - Push To Main
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+  
+jobs:
+  build-app:
+    name: "Build App"
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    
+    - name: Install dependencies
+      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
+    
+    - name: Build
+      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.csproj" --configuration Release --no-restore
+    
+    - name: Test
+      run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.csproj" --no-restore --verbosity normal
+      
+    - name: Publish
+      run: |
+        dotnet publish "${{ github.workspace }}/mywebapp/mywebapp.csproj" -c Release -o mywebapp
+    
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.0
+      with:
+        # Artifact name
+        name: mywebappbuildartifacts
+        # A file, directory or wildcard pattern that describes what to upload
+        path: mywebapp/**
+        # The desired behavior if no files are found using the provided path.
+        if-no-files-found: error
+        # Duration after which artifact will expire in days. 0 means using default retention.
+        retention-days: 90
+
+
+  deploy-DEV:
+    name: "Deploy To Azure DEV env"
+
+    runs-on: ubuntu-latest
+    
+    needs:
+      - build-app
+    
+    environment:
+      name: 'DEMO06_DEV'
+      url: 'https://mywebapp-actions-dev.azurewebsites.net'
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.0.8
+      with:
+        # Artifact name
+        name: 'mywebappbuildartifacts'
+        # Destination path
+        path: 'mywebappbuildartifacts'
+   
+    # Deploy to Azure Web apps
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: mywebapp-actions # Replace with your app name
+        package: 'mywebappbuildartifacts'
+        slot-name: 'dev'   
+        
+  deploy-QA:
+    name: "Deploy To Azure QA env"
+
+    runs-on: ubuntu-latest
+    
+    needs:
+      - build-app
+    
+    environment:
+      name: 'DEMO06_QA'
+      url: 'https://mywebapp-actions-qa.azurewebsites.net'
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.0.8
+      with:
+        # Artifact name
+        name: 'mywebappbuildartifacts'
+        # Destination path
+        path: 'mywebappbuildartifacts'
+   
+    # Deploy to Azure Web apps
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: mywebapp-actions # Replace with your app name
+        package: 'mywebappbuildartifacts'
+        slot-name: 'qa'   
+        
+  deploy-PROD:
+    name: "Deploy To Azure PROD env"
+
+    runs-on: ubuntu-latest
+    
+    needs:
+      - deploy-DEV
+      - deploy-QA
+    
+    environment:
+      name: 'DEMO06_PROD'
+      url: 'https://mywebapp-actions.azurewebsites.net'
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.0.8
+      with:
+        # Artifact name
+        name: 'mywebappbuildartifacts'
+        # Destination path
+        path: 'mywebappbuildartifacts'
+   
+    # Deploy to Azure Web apps
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: mywebapp-actions # Replace with your app name
+        package: 'mywebappbuildartifacts'

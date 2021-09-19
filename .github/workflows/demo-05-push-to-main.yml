@@ -1,0 +1,22 @@
+# I am a workflow that demonstrates how to trigger on a push to the main branch.
+# This workflow should be disabled before the start of the presentation, and enabled when needed
+
+name: Demo 05 - Push To Main
+
+on:
+  push:
+    branches:
+      - main
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  
+  pr-check:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Runs a single command using the runners shell
+    - name: Send greeting
+      run: echo "I run when a push happens to main"

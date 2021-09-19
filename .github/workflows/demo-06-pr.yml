@@ -1,0 +1,45 @@
+name: Demo 06 - Pull Request
+
+on:
+  pull_request:
+    branches: 
+      - main
+  
+jobs:
+  build-test-branch:
+    name: "Build and Test Of PR"
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    
+    - name: Install dependencies
+      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
+    
+    - name: Build
+      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.csproj" --configuration Release --no-restore
+    
+    - name: Test
+      run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.csproj" --no-restore --verbosity normal
+      
+    - name: Publish
+      run: |
+        dotnet publish "${{ github.workspace }}/mywebapp/mywebapp.csproj" -c Release -o mywebapp
+    
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.0
+      with:
+        # Artifact name
+        name: mywebappbuildartifacts
+        # A file, directory or wildcard pattern that describes what to upload
+        path: mywebapp/**
+        # The desired behavior if no files are found using the provided path.
+        if-no-files-found: error
+        # Duration after which artifact will expire in days. 0 means using default retention.
+        retention-days: 90
