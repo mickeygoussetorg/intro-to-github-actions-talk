@@ -25,10 +25,6 @@ I am used to explain how to chain multiple jobs together.
 
 I am used to explain context variables.
 
-### demo-05-pr.yml (Demo 05 - Pull Request)
-
-I am used to show triggering on a pull request, and branch protection rules.
-
 ### demo-05-push-to-main.yml (Demo 05 - Push To Main)
 
 I am used to show triggering on a push to main.
