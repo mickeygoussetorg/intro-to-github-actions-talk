@@ -1,4 +1,4 @@
-name: Demo 06 - Push To Main
+name: Demo 05 - Push To Main
 
 on:
   workflow_dispatch:
