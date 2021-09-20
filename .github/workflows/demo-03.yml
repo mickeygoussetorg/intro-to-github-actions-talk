@@ -34,8 +34,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 # THE FOLLOWING TWO LINES SHOULD BE COMMENTED OUT AT THE BEGINNING OF THE DEMO
-#    needs:
-#      - job1
+    needs:
+      - job1
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -47,8 +47,8 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 # THE FOLLOWING TWO LINES SHOULD BE COMMENTED OUT AT THE BEGINNING OF THE DEMO
-#    needs:
-#     - job1
+    needs:
+     - job1
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -60,9 +60,9 @@ jobs:
    # The type of runner that the job will run on
    runs-on: ubuntu-latest
 # THE FOLLOWING THREE LINES SHOULD BE COMMENTED OUT AT THE BEGINNING OF THE DEMO
-#   needs:
-#     - job2
-#     - job3
+   needs:
+     - job2
+     - job3
 
    # Steps represent a sequence of tasks that will be executed as part of the job
    steps:
