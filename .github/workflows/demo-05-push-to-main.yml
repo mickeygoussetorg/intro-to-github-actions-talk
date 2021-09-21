@@ -55,7 +55,7 @@ jobs:
       - build-app
     
     environment:
-      name: 'DEMO06_DEV'
+      name: 'DEMO05_DEV'
       url: 'https://mywebapp-actions-dev.azurewebsites.net'
 
     steps:
@@ -96,7 +96,7 @@ jobs:
       - build-app
     
     environment:
-      name: 'DEMO06_QA'
+      name: 'DEMO05_QA'
       url: 'https://mywebapp-actions-qa.azurewebsites.net'
 
     steps:
@@ -138,7 +138,7 @@ jobs:
       - deploy-QA
     
     environment:
-      name: 'DEMO06_PROD'
+      name: 'DEMO05_PROD'
       url: 'https://mywebapp-actions.azurewebsites.net'
 
     steps:
