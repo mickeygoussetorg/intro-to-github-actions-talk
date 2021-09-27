@@ -1,1 +1,17 @@
+name: Star The Repo
 
+on:
+  workflow_dispatch:
+
+jobs:
+
+  change-the-bulb-color:
+    name: Change the Demo Bulb Color
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+      - name: Change the bulb color
+        run: |
+          curl -X PUT "https://api.lifx.com/v1/lights/${{ secrets.LIFX_DEMO_LIGHT_BULB }}/state" -H "Authorization: Bearer ${{ secrets.LIFX_PAT}}" -d "color=green"
