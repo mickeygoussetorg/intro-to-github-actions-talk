@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Make PR Fail
+      run: exit 1
+
     - uses: actions/checkout@v2
       
     - name: Setup .NET Core
