@@ -1,4 +1,4 @@
-name: Star The Repo
+name: Demo 06 - Star The Repo
 
 on:
   workflow_dispatch:
@@ -14,4 +14,4 @@ jobs:
     
       - name: Change the bulb color
         run: |
-          curl -X PUT "https://api.lifx.com/v1/lights/${{ secrets.LIFX_DEMO_LIGHT_BULB }}/state" -H "Authorization: Bearer ${{ secrets.LIFX_PAT}}" -d "color=green"
+          curl -X PUT "https://api.lifx.com/v1/lights/${{ secrets.LIFX_DEMO_LIGHT_BULB }}/state" -H "Authorization: Bearer ${{ secrets.LIFX_PAT}}" -d "color=yellow"
