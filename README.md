@@ -1,5 +1,10 @@
 # Intro To GitHub Actions Presentation
 
+TODO
+
+- revamp ReadMe
+- Add steps to reset repo after talks are finished
+
 I contain the demos related to my Intro to GitHub Actions Presentation.
 
 
