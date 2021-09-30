@@ -29,7 +29,8 @@ jobs:
       run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
+      run: |
+        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
 
     - name: Test Report
       uses: dorny/test-reporter@v1.5.0
@@ -40,12 +41,10 @@ jobs:
         reporter: dotnet-trx
       
     - name: Publish
-      if: success() || failure()    # run this step even if previous step failed
       run: |
         dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
-      if: success() || failure()    # run this step even if previous step failed
       uses: actions/upload-artifact@v2.2.0
       with:
         # Artifact name
