@@ -25,17 +25,17 @@ jobs:
         dotnet-version: 3.1.301
     
     - name: Install dependencies
-      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
+      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
     
     - name: Build
-      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.csproj" --configuration Release --no-restore
+      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.csproj" --no-restore --verbosity normal
+      run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal
       
     - name: Publish
       run: |
-        dotnet publish "${{ github.workspace }}/mywebapp/mywebapp.csproj" -c Release -o mywebapp
+        dotnet publish "${{ github.workspace }}/mywebapp/mywebapp.sln" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.0
