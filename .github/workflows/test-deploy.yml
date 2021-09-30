@@ -40,10 +40,12 @@ jobs:
         reporter: dotnet-trx
       
     - name: Publish
+      if: success() || failure()    # run this step even if previous step failed
       run: |
         dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
+      if: success() || failure()    # run this step even if previous step failed
       uses: actions/upload-artifact@v2.2.0
       with:
         # Artifact name
