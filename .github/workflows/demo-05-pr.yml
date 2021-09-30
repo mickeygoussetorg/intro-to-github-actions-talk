@@ -14,28 +14,29 @@ jobs:
     steps:
 
 # THIS LINE SHOULD BE COMMENTED OUT AT BEGINNING OF DEMO
-    - name: Make PR Fail
-      run: exit 1
+#    - name: Make PR Fail
+#      run: exit 1
 
     - uses: actions/checkout@v2
+
       
-    - name: Setup .NET Core
+    - name: Setup .NET Core 5
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.301
+        dotnet-version: 5.0.x
     
     - name: Install dependencies
-      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
+      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
     
     - name: Build
-      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.csproj" --configuration Release --no-restore
+      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.csproj" --no-restore --verbosity normal
+      run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal
       
     - name: Publish
       run: |
-        dotnet publish "${{ github.workspace }}/mywebapp/mywebapp.csproj" -c Release -o mywebapp
+        dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.0
@@ -43,7 +44,7 @@ jobs:
         # Artifact name
         name: mywebappbuildartifacts
         # A file, directory or wildcard pattern that describes what to upload
-        path: mywebapp/**
+        path: mywebapp/src/**
         # The desired behavior if no files are found using the provided path.
         if-no-files-found: error
         # Duration after which artifact will expire in days. 0 means using default retention.
