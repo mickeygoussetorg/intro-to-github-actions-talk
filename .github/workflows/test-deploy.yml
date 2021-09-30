@@ -16,7 +16,6 @@ jobs:
 #      run: exit 1
 
     - uses: actions/checkout@v2
-
       
     - name: Setup .NET Core 5
       uses: actions/setup-dotnet@v1
@@ -48,43 +47,4 @@ jobs:
         # Duration after which artifact will expire in days. 0 means using default retention.
         retention-days: 90
   
-  deploy-DEV:
-    name: "Deploy To Azure DEV env"
-
-    runs-on: ubuntu-latest
-    
-    needs:
-      - build-test-branch
-    
-    environment:
-      name: 'DEMO05_DEV'
-      url: 'https://mywebapp-actions-dev.azurewebsites.net'
-
-    steps:
-    - uses: actions/checkout@v2
-      
-    - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    
-    - name: 'Login via Azure CLI'
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Download a Build Artifact
-      uses: actions/download-artifact@v2.0.8
-      with:
-        # Artifact name
-        name: 'mywebappbuildartifacts'
-        # Destination path
-        path: 'mywebappbuildartifacts'
-   
-    # Deploy to Azure Web apps
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
-      uses: azure/webapps-deploy@v2
-      with: 
-        app-name: mywebapp-actions # Replace with your app name
-        package: 'mywebappbuildartifacts'
-        slot-name: 'dev'   
+  
