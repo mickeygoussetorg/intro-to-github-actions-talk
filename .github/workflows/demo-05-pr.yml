@@ -18,7 +18,7 @@ jobs:
 #      run: exit 1
 
     - uses: actions/checkout@v2
-    
+
       
     - name: Setup .NET Core 5
       uses: actions/setup-dotnet@v1
@@ -36,7 +36,7 @@ jobs:
       
     - name: Publish
       run: |
-        dotnet publish "${{ github.workspace }}/mywebapp/mywebapp.sln" -c Release -o mywebapp
+        dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.0
