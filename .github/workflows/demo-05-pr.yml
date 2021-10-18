@@ -13,8 +13,8 @@ jobs:
 
     steps:
 
-    - name: Make PR Fail
-      run: exit 1
+    #- name: Make PR Fail
+    #  run: exit 1
 
     - uses: actions/checkout@v2
 
