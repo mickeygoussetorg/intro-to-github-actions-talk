@@ -5,6 +5,14 @@ name: Demo 01 - Basic Workflow
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI or API.
 on:
+  workflow_call:
+    inputs:
+      name:
+        description: 'Person to greet'
+        type: string
+        default: 'World'
+        required: true
+
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -28,4 +36,5 @@ jobs:
     
     # Runs a single command using the runners shell
     - name: Send greeting
-      run: echo "Hello ${{ github.event.inputs.name }}" # Outputs the input parameter, by accessing the github context object
+      run: |
+        echo "Hello ${{ github.event.inputs.name }}" # Outputs the input parameter, by accessing the github context object
