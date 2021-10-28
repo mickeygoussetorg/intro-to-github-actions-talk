@@ -1,0 +1,28 @@
+name: Container Jobs
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  Container:
+    runs-on: ubuntu-latest
+    container: node:latest
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+
+      - name: List environmental variables
+        run: env
+
+jobs:
+  Native:
+    runs-on: ubuntu-latest
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+
+      - name: List environmental variables
+        run: env
+        
+        
