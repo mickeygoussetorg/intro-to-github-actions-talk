@@ -10,8 +10,8 @@ jobs:
     container: ${{ matrix.container }}
     strategy:
       matrix:
-        os: [ubuntu-latest,  ubuntu-latest, self-hosted, self-hosted]
-        container: ['', 'node:latest', '', 'node-latest']
+        os: [ubuntu-latest, self-hosted]
+        container: ['', 'node:latest']
     steps:
       - name: List environmental variables
         run: |
