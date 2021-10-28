@@ -15,6 +15,9 @@ jobs:
       - name: List environmental variables
         run: env
         
+      - name: Check out repository
+        uses: actions/checkout@v2        
+        
       - name: list files in workspace
         run: ls ${{ github.workspace }}
 
@@ -27,6 +30,9 @@ jobs:
       - name: List environmental variables
         run: env
 
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
       - name: list files in workspace
         run: ls ${{ github.workspace }}
         
@@ -39,6 +45,9 @@ jobs:
       - name: List environmental variables
         run: env        
 
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
       - name: list files in workspace
         run: ls ${{ github.workspace }}
         
