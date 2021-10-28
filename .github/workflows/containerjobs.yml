@@ -15,7 +15,6 @@ jobs:
       - name: List environmental variables
         run: env
 
-jobs:
   Native:
     runs-on: ubuntu-latest
     steps:
