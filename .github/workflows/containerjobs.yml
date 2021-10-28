@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2        
         
       - name: list files in workspace
-        run: ls ${{ github.workspace }}
+        run: ls ./${{ github.workspace }}
 
   Native:
     runs-on: ubuntu-latest
