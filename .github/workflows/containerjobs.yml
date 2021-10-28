@@ -51,4 +51,19 @@ jobs:
       - name: list files in workspace
         run: ls ${{ github.workspace }}
         
+  Self-Hosted-Container:
+    runs-on: self-hosted
+    container: node:latest
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
 
+      - name: List environmental variables
+        run: env        
+
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
+      - name: list files in workspace
+        run: ls ${{ github.workspace }}
+        
