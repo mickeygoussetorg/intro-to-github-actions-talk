@@ -24,4 +24,11 @@ jobs:
       - name: List environmental variables
         run: env
         
-        
+  Self-Hosted:
+    runs-on: self-hosted
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+
+      - name: List environmental variables
+        run: env        
