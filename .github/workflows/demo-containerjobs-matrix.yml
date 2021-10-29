@@ -16,6 +16,6 @@ jobs:
       - name: List environmental variables
         run: |
           pwd
-          env
-          echo "workspace: ${{ github.workspace }}"
+          echo "workspace env: $GITHUB_WORKSPACE"
+          echo "workspace context: ${{ github.workspace }}"
 
