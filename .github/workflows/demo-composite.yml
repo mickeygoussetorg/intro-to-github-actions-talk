@@ -1,4 +1,4 @@
-name: 'Hello World'
+name: Hello composite
 
 description: 'Greet someone'
 
@@ -19,5 +19,5 @@ runs:
     - id: random-number-generator
       run: echo "::set-output name=random-id::$(echo $RANDOM)"
       shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh
+    - run: ${{ github.action_path }}/scripts/goodbye.sh
       shell: bash
