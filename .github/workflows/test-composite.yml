@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: say hello
+    steps:
+    - uses: actions/checkout@v2
+
+    - id: foo
+      uses: ./.github/workflows/demo-composite.yml
+      with:
+        who-to-greet: 'test composite'
+
+    - run: echo random-number ${{ steps.foo.outputs.random-number }}
+      shell: bash
