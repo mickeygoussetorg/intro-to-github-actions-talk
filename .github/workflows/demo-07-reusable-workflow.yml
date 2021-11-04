@@ -1,6 +1,5 @@
 # demo re-usable
-
-name: Demo 01 - Basic Workflow
+name: Reusable Hello Workflow
 
 on:
   workflow_call:

@@ -1,17 +1,12 @@
 # Test re-usable workflow
-
 name: Demo Reusable workflow
 
 on:
   workflow_dispatch:
-    # Inputs the workflow accepts.
     inputs:
       testname:
-        # Friendly description to be shown in the UI instead of 'name'
         description: 'Test person to greet'
-        # Default value if no value is explicitly provided
         default: 'world test'
-        # Input has to be provided for the workflow to run
         required: true
 
 jobs:
