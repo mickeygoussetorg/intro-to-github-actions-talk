@@ -19,7 +19,7 @@ jobs:
     name: Test Reusable
     uses: philspokas/intro-to-github-actions-talk/.github/workflows/demo-07-reusable-workflow.yml@main
     with:
-      name: ${{ inputs.testname }}
+      name: ${{ github.event.inputs.testname }}
 
 
     
