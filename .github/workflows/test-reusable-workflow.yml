@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
+      test-name:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
+        description: 'Test person to greet'
         # Default value if no value is explicitly provided
-        default: 'World'
+        default: 'world test'
         # Input has to be provided for the workflow to run
         required: true
 
@@ -19,7 +19,7 @@ jobs:
     name: Test Reusable
     uses: philspokas/intro-to-github-actions-talk/.github/workflows/demo-07-reusable-workflow.yml@main
     with:
-      name: "greetme"
+      name: ${{ inputs.test-name }}
 
 
     
