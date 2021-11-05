@@ -2,9 +2,9 @@ name: Demo 05 - Push To Main
 
 on:
   workflow_dispatch:
-  push:
-    branches: 
-      - main
+  # push:
+  #   branches: 
+  #     - main
   
 jobs:
   build-app:

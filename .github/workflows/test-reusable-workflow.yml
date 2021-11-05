@@ -1,0 +1,21 @@
+# Test re-usable workflow
+name: Demo Reusable workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      testname:
+        description: 'Test person to greet'
+        default: 'world test'
+        required: true
+
+jobs:
+  test-resuable:
+    name: Test Reusable
+    uses: philspokas/intro-to-github-actions-talk/.github/workflows/demo-07-reusable-workflow.yml@main
+    with:
+      name: ${{ github.event.inputs.testname }}
+
+
+    
+

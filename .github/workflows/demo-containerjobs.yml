@@ -1,0 +1,69 @@
+name: Container Jobs
+
+on: 
+  # push:
+  workflow_dispatch:
+
+jobs:
+  Container:
+    runs-on: ubuntu-latest
+    container: node:latest
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+
+      - name: List environmental variables
+        run: pwd; env
+        
+      - name: Check out repository
+        uses: actions/checkout@v2        
+        
+      - name: list files in workspace
+        run: ls ./${{ github.workspace }}
+
+  Native:
+    runs-on: ubuntu-latest
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+
+      - name: List environmental variables
+        run: pwd; env
+
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
+      - name: list files in workspace
+        run: ls ${{ github.workspace }}
+        
+  Self-Hosted:
+    runs-on: self-hosted
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+
+      - name: List environmental variables
+        run: pwd; env       
+
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
+      - name: list files in workspace
+        run: ls ${{ github.workspace }}
+        
+  Self-Hosted-Container:
+    runs-on: self-hosted
+    container: node:latest
+    steps:
+#      - name: Check out repository
+#        uses: actions/checkout@v2
+
+      - name: List environmental variables
+        run: pwd; env     
+
+      - name: Check out repository
+        uses: actions/checkout@v2
+        
+      - name: list files in workspace
+        run: ls ${{ github.workspace }}
+        

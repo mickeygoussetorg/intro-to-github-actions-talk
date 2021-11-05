@@ -1,0 +1,21 @@
+name: Container Jobs enter the Matrix 
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  Matrix:
+    runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, self-hosted]
+        container: ['', 'node:latest']
+    steps:
+      - name: List environmental variables
+        run: |
+          pwd
+          echo "workspace env: $GITHUB_WORKSPACE"
+          echo "workspace context: ${{ github.workspace }}"
+
