@@ -87,6 +87,9 @@ jobs:
         name: 'mywebappbuildartifacts'
         # Destination path
         path: 'mywebappbuildartifacts'
+        
+    - name: ls
+      run: ls mywebappbuildartifacts
    
     # Deploy to Azure Web apps
     - name: 'Run Azure webapp deploy action using publish profile credentials'
