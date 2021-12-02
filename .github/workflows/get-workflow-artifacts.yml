@@ -70,15 +70,15 @@ jobs:
       
     - name: download artifact
       run: |
-        GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}    # Github Personal Access token passed from user
+        #GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}    # Github Personal Access token passed from user
         GITHUB_ORG='mickeygoussetorg'       # Name of the GitHub.com Organization to create new repository
         GITHUB_REPO='intro-to-github-actions-talk'      # Name of the Github.com Repository to create
         GITHUB_API='https://api.github.com' # API endpoint for GitHub
         RUN_ID=${{ github.run_id }}
 
         # Get the artifact list
-        #ARTIFACTS=$(curl --fail -X GET --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json')
-        ARTIFACTS=$(curl -X --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts")
+        ARTIFACTS=$(curl --fail -X GET --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json')
+        #ARTIFACTS=$(curl -X --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts")
         
         echo "So did I get anythign back from my curl"
         echo $ARTIFACTS
@@ -90,7 +90,7 @@ jobs:
         curl -O -J -L \
           --url $DOWNLOAD_URL \
           -H 'Accept: application/vnd.github.v3+json' \
-          -H "authorization: Bearer $GITHUB_TOKEN" \
+          -H "authorization: Bearer ${{ secrets.GH_PAT }}" \
           -H 'content-type: application/json'
           
     - name: ls
