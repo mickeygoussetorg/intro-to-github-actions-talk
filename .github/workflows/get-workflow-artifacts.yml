@@ -64,6 +64,9 @@ jobs:
 
     runs-on: ubuntu-latest
     
+    needs:
+      - build-test-branch
+    
     steps:
 
     - name: output run id
