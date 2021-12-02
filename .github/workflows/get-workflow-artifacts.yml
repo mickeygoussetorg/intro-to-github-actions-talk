@@ -75,15 +75,10 @@ jobs:
         GITHUB_REPO='intro-to-github-actions-talk'      # Name of the Github.com Repository to create
         GITHUB_API='https://api.github.com' # API endpoint for GitHub
         RUN_ID=${{ github.run_id }}
-        
-        echo "Please Work"
-        echo "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts"
-        MYURL="$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts"
-        curl https://api.github.com/repos/mickeygoussetorg/intro-to-github-actions-talk/actions/runs/1531595364/artifacts
-        
+
         # Get the artifact list
         #ARTIFACTS=$(curl --fail -X GET --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json')
-        ARTIFACTS=$(curl -X -H 'Accept:application/vnd.github.v3+json' -H "authorization:Bearer ${{ secrets.GITHUB_TOKEN }}" -H 'content-type:application/json' --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts")
+        ARTIFACTS=$(curl -X "GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts")
         
         echo "So did I get anythign back from my curl"
         echo $ARTIFACTS
