@@ -65,8 +65,10 @@ jobs:
     
     steps:
 
-    - name: output run id
-      run: echo ${{ github.run_id }}
+    - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
       
     - name: download artifact
       run: |
