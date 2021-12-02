@@ -80,7 +80,8 @@ jobs:
         echo "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts"
         
         # Get the artifact list
-        ARTIFACTS=$(curl --fail -X GET \
+        #ARTIFACTS=$(curl --fail -X GET \
+        ARTIFACTS=$(curl -O -J -L GET \
           --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" \
           -H 'Accept: application/vnd.github.v3+json' \
           -H "authorization: Bearer ${{ secrets.GH_PAT }}" \
