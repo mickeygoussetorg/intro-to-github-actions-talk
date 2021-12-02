@@ -70,7 +70,7 @@ jobs:
       
     - name: download artifact
       run: |
-        GITHUB_TOKEN=$GH_PAT     # Github Personal Access token passed from user
+        GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}    # Github Personal Access token passed from user
         GITHUB_ORG='mickeygoussetorg'       # Name of the GitHub.com Organization to create new repository
         GITHUB_REPO='intro-to-github-actions-talk'      # Name of the Github.com Repository to create
         GITHUB_API='https://api.github.com' # API endpoint for GitHub
