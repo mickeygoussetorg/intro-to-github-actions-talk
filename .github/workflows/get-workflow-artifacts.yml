@@ -59,8 +59,8 @@ jobs:
         # Duration after which artifact will expire in days. 0 means using default retention.
         retention-days: 90
         
-  build-test-branch:
-    name: "Build and Test"
+  get-artifacts:
+    name: "Get Artifacts"
 
     runs-on: ubuntu-latest
     
