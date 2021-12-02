@@ -83,7 +83,7 @@ jobs:
         ARTIFACTS=$(curl --fail -X GET \
           --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" \
           -H 'Accept: application/vnd.github.v3+json' \
-          -H "authorization: Bearer $GITHUB_TOKEN" \
+          -H "authorization: Bearer ${{ secrets.GH_PAT }}" \
           -H 'content-type: application/json')
         
         echo "So did I get anythign back from my curl"
