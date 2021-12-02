@@ -76,6 +76,8 @@ jobs:
         GITHUB_API='https://api.github.com' # API endpoint for GitHub
         RUN_ID=${{ github.run_id }}
         
+        echo "Please Work"
+        echo "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts"
         
         # Get the artifact list
         ARTIFACTS=$(curl --fail -X GET \
@@ -84,6 +86,7 @@ jobs:
           -H "authorization: Bearer $GITHUB_TOKEN" \
           -H 'content-type: application/json')
         
+        echo "So did I get anythign back from my curl"
         echo $ARTIFACTS
         
         DOWNLOAD_URL=$(echo $ARTIFACTS | jq '.artifacts | map(select(.name=="mywebappbuildartifacts")) | .[0] | .archive_download_url' )
