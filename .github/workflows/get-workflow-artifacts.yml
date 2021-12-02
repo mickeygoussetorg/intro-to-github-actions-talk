@@ -78,7 +78,8 @@ jobs:
         
         echo "Please Work"
         echo "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts"
-        curl --fail -X GET --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json'
+        MYURL="$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts"
+        curl --fail -X GET --url "$MYURL" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json'
         
         # Get the artifact list
         #ARTIFACTS=$(curl --fail -X GET --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json')
