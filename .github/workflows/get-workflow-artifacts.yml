@@ -77,7 +77,8 @@ jobs:
         RUN_ID=${{ github.run_id }}
 
         # Get the artifact list
-        ARTIFACTS=$(curl --fail -X GET --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json')
+        #ARTIFACTS=$(curl --fail -X GET --url "$GITHUB_API/repos/$GITHUB_ORG/$GITHUB_REPO/actions/runs/$RUN_ID/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json')
+        ARTIFACTS=$(curl --fail -X GET --url "https://api.github.com/repos/mickeygoussetorg/intro-to-github-actions-talk/actions/runs/1531903365/artifacts" -H 'Accept: application/vnd.github.v3+json' -H "authorization: Bearer ${{ secrets.GH_PAT }}" -H 'content-type: application/json')
         
         echo "So did I get anythign back from my curl"
         echo $ARTIFACTS
