@@ -39,4 +39,4 @@ jobs:
     - name: Send greeting
       run: |
         echo "Hello ${{ github.event.inputs.name }}"
-        #echo "Python ver ${{ matrix.python }}"  
+        echo "Python ver ${{ matrix.python }}"  
