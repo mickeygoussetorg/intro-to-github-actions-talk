@@ -81,7 +81,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v2.0.8
+      uses: actions/download-artifact@v4.1.7
       with:
         # Artifact name
         name: 'mywebappbuildartifacts'
@@ -122,7 +122,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v2.0.8
+      uses: actions/download-artifact@v4.1.7
       with:
         # Artifact name
         name: 'mywebappbuildartifacts'
@@ -164,7 +164,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v2.0.8
+      uses: actions/download-artifact@v4.1.7
       with:
         # Artifact name
         name: 'mywebappbuildartifacts'
