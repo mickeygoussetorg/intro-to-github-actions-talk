@@ -1,0 +1,53 @@
+name: Build, Test, and Deploy to Network Share
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, windows] 
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Restore
+        run: dotnet restore mywebapp/mywebapp.sln
+
+      - name: Build
+        run: dotnet build mywebapp/mywebapp.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test mywebapp/mywebapp.sln --no-restore --logger "trx;LogFileName=test-results.trx"
+
+      - name: Publish
+        run: dotnet publish mywebapp/src/mywebapp.csproj -c Release -o published
+      
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mywebappbuildartifacts-windows
+          path: published/**
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Deploy to Network Share
+        shell: powershell
+        run: |
+          Write-Host "Deploying application to a Windows share..."
+
+          # Use single quotes so backslashes are taken literally in PowerShell
+          $source = 'C:\actions-runner\_work\intro-to-github-actions-talk\intro-to-github-actions-talk\published'
+          $destination = '\\SHASHANK\Users\spaka\OneDrive\Desktop\deploy'
+
+          # 1. Copy the published files recursively to the share
+          Copy-Item -Path "$source\*" -Destination $destination -Recurse -Force
+
+          Write-Host "Deployment complete."
