@@ -1,0 +1,52 @@
+name: Demo 05 - Pull Request
+
+on:
+  pull_request:
+    branches: 
+      - main
+  
+jobs:
+  build-test-branch:
+    name: "Build and Test Of PR"
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 6.0.x   # or 8.0.x (recommended)
+
+    - name: Install dependencies
+      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
+    
+    - name: Build
+      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
+    
+    - name: Test
+      run: |
+        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" \
+        --no-restore \
+        --verbosity normal \
+        --logger "trx;LogFileName=test-results.trx"
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: XUnit Tests
+        path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx
+        reporter: dotnet-trx
+      
+    - name: Publish
+      run: |
+        dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
+    
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mywebappbuildartifacts
+        path: mywebapp/**
+        if-no-files-found: error
+        retention-days: 90

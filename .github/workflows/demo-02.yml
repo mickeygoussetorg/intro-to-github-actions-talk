@@ -30,7 +30,7 @@ jobs:
           - macos-latest
           - windows-latest
 # THE FOLLOWING LINE SHOULD BE COMMENTED OUT AT THE BEGINNING OF THE DEMO
-        python: [2.7, 3.6, 3.8]
+        python: [3.8, 3.10, 3.12]
     runs-on: ${{ matrix.os }}  # uses the variable defined in the matrix to set the runs-on statement
 
     # Steps represent a sequence of tasks that will be executed as part of the job
