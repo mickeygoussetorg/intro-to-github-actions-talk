@@ -16,13 +16,13 @@ jobs:
     # - name: Make PR Fail
     #  run: exit 1
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
       
     - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     
     - name: Install dependencies
       run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"

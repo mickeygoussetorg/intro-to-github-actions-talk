@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       
     - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     
     - name: Install dependencies
       run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
@@ -68,12 +68,12 @@ jobs:
       url: 'https://mywebapp-actions-dev.azurewebsites.net'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       
     - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
@@ -109,10 +109,10 @@ jobs:
       url: 'https://mywebapp-actions-qa.azurewebsites.net'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       
     - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 5.0.x
     
@@ -151,10 +151,10 @@ jobs:
       url: 'https://mywebapp-actions.azurewebsites.net'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       
     - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 5.0.x
     
@@ -177,3 +177,5 @@ jobs:
       with: 
         app-name: mywebapp-actions # Replace with your app name
         package: 'mywebappbuildartifacts'
+    - name: 'Notify deployment'
+      run: echo "Deployment to ${{ inputs.environment }} completed successfully!"
