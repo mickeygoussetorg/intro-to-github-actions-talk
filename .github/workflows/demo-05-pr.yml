@@ -15,10 +15,10 @@ jobs:
     steps:
     # - name: Make PR Fail
     #  run: exit 1
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       
     - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 5.0.x
     
@@ -30,7 +30,7 @@ jobs:
     
     - name: Test
       run: |
-        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
+        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
     - name: Test Report
       uses: dorny/test-reporter@v1.9.1
