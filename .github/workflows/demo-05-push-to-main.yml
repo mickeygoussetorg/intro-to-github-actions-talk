@@ -19,10 +19,10 @@ jobs:
     steps:
     - uses: actions/checkout@v5
       
-    - name: Setup .NET Core 5
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     
     - name: Install dependencies
       run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
@@ -68,10 +68,10 @@ jobs:
     steps:
     - uses: actions/checkout@v5
       
-    - name: Setup .NET Core 5
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     
     - name: 'Login via Azure CLI'
       uses: azure/login@v2
@@ -103,10 +103,10 @@ jobs:
     steps:
     - uses: actions/checkout@v5
       
-    - name: Setup .NET Core 5
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     
     - name: 'Login via Azure CLI'
       uses: azure/login@v2
@@ -139,10 +139,10 @@ jobs:
     steps:
     - uses: actions/checkout@v5
       
-    - name: Setup .NET Core 5
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     
     - name: 'Login via Azure CLI'
       uses: azure/login@v2
