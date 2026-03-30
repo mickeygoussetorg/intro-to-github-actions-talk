@@ -37,6 +37,7 @@ jobs:
     - name: Test Report
       uses: dorny/test-reporter@v3
       if: ${{ !cancelled() }}
+      continue-on-error: true
       with:
         name: XUnit Tests
         path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx
