@@ -5,8 +5,10 @@ on:
     branches: 
       - main
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+permissions:
+  contents: read
+  actions: read
+  checks: write
 
 jobs:
   build-test-branch:
@@ -33,8 +35,8 @@ jobs:
         dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
     - name: Test Report
-      uses: dorny/test-reporter@v1.9.1
-      if: success() || failure()
+      uses: dorny/test-reporter@v3
+      if: ${{ !cancelled() }}
       with:
         name: XUnit Tests
         path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx
