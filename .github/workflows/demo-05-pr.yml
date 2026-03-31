@@ -1,59 +1,80 @@
+# The display name of the workflow in the GitHub Actions tab
 name: Demo 05 - Pull Request
 
+# Trigger configuration: Defines what events start this workflow
 on:
   pull_request:
-    branches: 
+    # Only trigger when a Pull Request is targeted at the 'main' branch
+    branches:
       - main
-  
-jobs:
-  build-test-branch:
-    name: "Build and Test Of PR"
 
+# A workflow is made of one or more 'jobs' that can run in parallel or sequence
+jobs:
+  # Unique identifier for this job
+  build-test-branch:
+    # Friendly name shown in the GitHub UI
+    name: "Build and Test Of PR"
+    
+    # The virtual machine environment (Runner) that will execute the code
     runs-on: ubuntu-latest
 
+    # The sequence of tasks to be executed in this job
     steps:
+      # Pulls your source code from the repository into the runner's local filesystem
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    # - name: Make PR Fail
-    #  run: exit 1
+      # Installs the specified .NET SDK so the 'dotnet' command is available
+      - name: Setup .NET Core 8
+        uses: actions/setup-dotnet@v4
+        with:
+          # '8.0.x' ensures the latest security patches for version 8.0 are used
+          dotnet-version: 8.0.x
 
-    - uses: actions/checkout@v2
+      # System-level requirement: Installs SSL libraries often needed for .NET 8 on Linux
+      - name: Install libssl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl3
 
-      
-    - name: Setup .NET Core 5
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    
-    - name: Install dependencies
-      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
-    
-    - name: Build
-      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
-    
-    - name: Test
-      run: |
-        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
+      # Downloads all NuGet packages (dependencies) listed in your solution
+      - name: Install dependencies
+        # ${{ github.workspace }} is the absolute path to your repo on the runner
+        run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
 
-    - name: Test Report
-      uses: dorny/test-reporter@v1.5.0
-      if: success() || failure()    # run this step even if previous step failed
-      with:
-        name: XUnit Tests            # Name of the check run which will be created
-        path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx    # Path to test results
-        reporter: dotnet-trx
-      
-    - name: Publish
-      run: |
-        dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
-    
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.2.0
-      with:
-        # Artifact name
-        name: mywebappbuildartifacts
-        # A file, directory or wildcard pattern that describes what to upload
-        path: mywebapp/**
-        # The desired behavior if no files are found using the provided path.
-        if-no-files-found: error
-        # Duration after which artifact will expire in days. 0 means using default retention.
-        retention-days: 90
+      # Compiles the code. --no-restore saves time by skipping the previous step's work
+      - name: Build
+        run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
+
+      # Runs unit tests and generates a technical '.trx' log file for results
+      - name: Test
+        run: |
+          dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+      # Transforms the technical '.trx' file into a beautiful UI report inside the PR
+      - name: Test Report
+        uses: dorny/test-reporter@v1.7.0
+        # Condition: Runs even if tests fail, so you can actually see which ones failed
+        if: success() || failure()
+        with:
+          name: XUnit Tests
+          path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx
+          reporter: dotnet-trx
+
+      # Bundles the compiled application into a deployment-ready folder named 'mywebapp'
+      - name: Publish
+        run: |
+          dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp --no-build
+
+      # Saves the 'published' folder to GitHub's cloud so you can download the build later
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # Name of the downloadable ZIP file
+          name: mywebappbuildartifacts
+          # The local folder to be uploaded
+          path: mywebapp/**
+          # Stop the workflow if the build failed to produce files
+          if-no-files-found: error
+          # Storage duration for the file (in days)
+          retention-days: 90

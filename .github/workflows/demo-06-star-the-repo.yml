@@ -1,24 +1,35 @@
+# Name of the workflow that appears in the GitHub Actions UI
 name: Demo 06 - Star The Repo
 
+# Trigger conditions for when this workflow runs
 on:
+  # Allows manual triggering from the Actions tab
   workflow_dispatch:
+  # Triggers when someone stars the repository
   watch:
     types:
-      - started
+      - started  # The 'started' type refers to starring a repo
 
 jobs:
 
   change-the-bulb-color:
+    # Display name for this job in the workflow run
     name: Change the Demo Bulb Color
     
+    # Specifies the runner environment (Ubuntu Linux)
     runs-on: ubuntu-latest
     
     steps:
     
+      # First step: Generate a random color
       - name: Find Random Color
+        # ID used to reference outputs from this step
         id: find-random-color
         run: |
+          # Generate a random number between 1 and 9
           RN=$(( $RANDOM % 9 + 1 ))
+          
+          # Use a case statement to map the random number to a color
           case $RN in
             1)
               COLOR="white"
@@ -48,15 +59,25 @@ jobs:
               COLOR="pink"
               ;;
             *)
+              # Fallback case (shouldn't be reached with the modulo logic)
               COLOR="THIS IS BAD"
               ;;
           esac
 
+          # Echo the values for debugging in the workflow logs
           echo $RN
           echo $COLOR
           
+          # Set the output variable 'bulbcolor' to be used in subsequent steps
+          # Note: set-output is deprecated; modern workflows should use $GITHUB_OUTPUT
           echo "::set-output name=bulbcolor::$COLOR"
     
+      # Second step: Change the physical light bulb color using LIFX API
       - name: Change the bulb color
         run: |
+          # Make a PUT request to the LIFX API to change the bulb's color
+          # Uses secrets stored in the repository:
+          #   - LIFX_DEMO_LIGHT_BULB: The ID of the specific light bulb
+          #   - LIFX_PAT: Personal Access Token for authentication
+          # The color parameter comes from the previous step's output
           curl -X PUT "https://api.lifx.com/v1/lights/${{ secrets.LIFX_DEMO_LIGHT_BULB }}/state" -H "Authorization: Bearer ${{ secrets.LIFX_PAT}}" -d "color=${{ steps.find-random-color.outputs.bulbcolor }}"
