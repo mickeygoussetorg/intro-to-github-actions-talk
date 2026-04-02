@@ -1,32 +1,61 @@
-# Demo 05 - Real World Demo Instructions
+name: Demo 05 - Pull Request
 
-I provide some high level instructions on how to run this demo.
+on:
+  pull_request:
+    branches: 
+      - main
+  
+jobs:
+  build-test-branch:
+    name: "Build and Test Of PR"
 
-Estimated Demo Time: X Minutes
+    runs-on: ubuntu-latest
 
-**Step 1: Create a Pull Request**
-- open the **mywebapp/Views/Shared/_Layout.cshtml** file
-- Modify the third menu option to say something like **This Conference Rocks**
-- Commit the change to a branch, and create a pull request
-- Notice the check that appears on the pull request, and that a workflow has started
-- open **demo-05-pr.yml** workflow file and explain it
-- workflow will fail, as designed
+    steps:
 
-**Step 2: Create a branch protection rule**
-- Open repo settings
-- Create a branch protection rule that requires the build-test-branch job to pass
-- Save branch protection rule settings
-- Open **demo-05-pr.yml** and comment out the failing steps
-- Commit to same branch, which will trigger the pull request to re-run checks
-- Notice this time that the check is required
-- After the workflow finishes, review output files
+    # - name: Make PR Fail
+    #  run: exit 1
 
-**Step 3: Push to Main**
-- Merge the pull request to main
-- Open **demo-05-push-to-main.yml** and explain what is happening
-- Open repository settings, and show Environments
-- Open running workflow and see visualization
-- Open Slack, and show slack integration and notifications
-- Show how new code is deployed to DEV and QA, but not PROD, but pulling up the websites
-- Approve the push to prod
-- Show the code was pushed to PROD
+    - uses: actions/checkout@v4
+
+      
+    - name: Setup .NET Core 5
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          5.0
+          6.0
+    
+    - name: Install dependencies
+      run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
+    
+    - name: Build
+      run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
+    
+    - name: Test
+      run: |
+        dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1.5.0
+      if: success() || failure()    # run this step even if previous step failed
+      with:
+        name: XUnit Tests            # Name of the check run which will be created
+        path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx    # Path to test results
+        reporter: dotnet-trx
+      
+    - name: Publish
+      run: |
+        dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
+    
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        # Artifact name
+        name: mywebappbuildartifacts
+        # A file, directory or wildcard pattern that describes what to upload
+        path: mywebapp/**
+        # The desired behavior if no files are found using the provided path.
+        if-no-files-found: error
+        # Duration after which artifact will expire in days. 0 means using default retention.
+        retention-days: 90
