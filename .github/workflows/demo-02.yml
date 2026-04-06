@@ -3,8 +3,6 @@
 # Display name of workflow
 name: Demo 02 - Matrix Builds
 
-
-
 # Controls when the action will run. Workflow runs when manually triggered using the UI or API.
 on:
   workflow_dispatch:
@@ -29,14 +27,15 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-# THE FOLLOWING LINE SHOULD BE COMMENTED OUT AT THE BEGINNING OF THE DEMO
-        python: [2.7, 3.6, 3.8]
-    runs-on: ${{ matrix.os }}  # uses the variable defined in the matrix to set the runs-on statement
+        python: [3.8, 3.9, 3.10]
+        
+
+    runs-on: ${{ matrix.os }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: |
-        echo "Hello ${{ github.event.inputs.name }}"
-        echo "Python ver ${{ matrix.python }}"  
+      # Runs a single command using the runner's shell
+      - name: Send greeting
+        run: |
+          echo "Hello ${{ github.event.inputs.name }}"
+          echo "Python ver ${{ matrix.python }}"
