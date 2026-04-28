@@ -12,7 +12,7 @@ on:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Person to greet'
         # Default value if no value is explicitly provided
-        default: 'World'
+        default: 'Hammad Khurshid'
         # Input has to be provided for the workflow to run
         required: true
 
@@ -69,3 +69,5 @@ jobs:
    # Runs a single command using the runners shell
    - name: Send greeting
      run: echo "Job 4 - Hello ${{ github.event.inputs.name }}"
+
+# Trigger new run

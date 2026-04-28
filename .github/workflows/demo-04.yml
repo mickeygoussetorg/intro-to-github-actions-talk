@@ -59,3 +59,5 @@ jobs:
         env:
           MATRIX_CONTEXT: ${{ toJSON(matrix) }}
         run: echo "$MATRIX_CONTEXT"
+
+# Context object demo
