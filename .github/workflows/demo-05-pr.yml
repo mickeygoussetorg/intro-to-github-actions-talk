@@ -9,14 +9,14 @@ jobs:
   build-test-branch:
     name: "Build and Test Of PR"
 
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-latest # Uses a fresh ubuntu-latest runner
     steps:
 
     # - name: Make PR Fail
     #  run: exit 1
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2 # downloads the pull request’s source code onto the runner
+
 
       
     - name: Setup .NET Core 5
@@ -24,17 +24,17 @@ jobs:
       with:
         dotnet-version: 5.0.x
     
-    - name: Install dependencies
+    - name: Install dependencies # download packages referenced by mywebapp/mywebapp.sln
       run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.sln"
     
-    - name: Build
+    - name: Build # Builds the solution in Release configuration
       run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.sln" --configuration Release --no-restore
     
-    - name: Test
+    - name: Test # Runs the solution’s tests & Produces a .trx test-results file
       run: |
         dotnet test "${{ github.workspace }}/mywebapp/mywebapp.sln" --no-restore --verbosity normal  --logger "trx;LogFileName=test-results.trx"
 
-    - name: Test Report
+    - name: Test Report # reads .trx results to report pass/fail details.
       uses: dorny/test-reporter@v1.5.0
       if: success() || failure()    # run this step even if previous step failed
       with:
@@ -42,11 +42,11 @@ jobs:
         path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx    # Path to test results
         reporter: dotnet-trx
       
-    - name: Publish
-      run: |
+    - name: Publish # Builds and publishes mywebapp/src/mywebapp.csproj in Release mode
+      run: |        # and Writes deployable output to the mywebapp directory.
         dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp
     
-    - name: Upload a Build Artifact
+    - name: Upload a Build Artifact # uploads everything under mywebapp/**
       uses: actions/upload-artifact@v2.2.0
       with:
         # Artifact name
