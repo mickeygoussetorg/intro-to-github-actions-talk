@@ -61,7 +61,7 @@ jobs:
           path: ${{ github.workspace }}/mywebapp/tests/TestResults/*.trx
           reporter: dotnet-trx
 
-      # Bundles the compiled application into a deployment-ready folder named 'mywebapp'
+      # Bundles the compiled application into a deployment-ready folder named 'mywebapp' in release configuration
       - name: Publish
         run: |
           dotnet publish "${{ github.workspace }}/mywebapp/src/mywebapp.csproj" -c Release -o mywebapp --no-build
